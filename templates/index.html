@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- emoji picker by https://github.com/OneSignal/emoji-picker -->
+     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+     <link href="static/css/emoji.css" rel="stylesheet">
+      <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+      <script src="static/js/config.js"></script>
+      <script src="static/js/util.js"></script>
+      <script src="static/js/jquery.emojiarea.js"></script>
+      <script src="static/js/emoji-picker.js"></script>
+    <title>Emoji Link Maker</title>
+</head>
+<body>
+<form action="/make" style="width: 25%" method="POST">
+    <label>Link to convert:</label><input type="url" placeholder="http://" name="uri"><br><hr><br>
+    <label>Permanent link: </label><input type="radio" name="linktype" value="permanent" checked><br>
+    <label><b>OR</b></label><br>
+    <label>24 hour link (custom text): </label><input type="radio" name="linktype" value="temporary"><br>
+    <label>One-shot link: </label><input type="radio" name="linktype" value="oneshot"><br>
+    <label>Custom link text: </label> <p class="lead emoji-picker-container">
+              <textarea rows="1" cols="50" maxlength="50" data-emojiable="true" name="clink" data-emoji-input="unicode"></textarea>
+    </p>
+    <input type="submit">
+
+</form>
+    <script>
+      $(function() {
+        // Initializes and creates emoji set from sprite sheet
+        window.emojiPicker = new EmojiPicker({
+          emojiable_selector: '[data-emojiable=true]',
+          assetsPath: '../lib/img/',
+          popupButtonClasses: 'fa fa-smile-o'
+        });
+        // Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+        // You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+        // It can be called as many times as necessary; previously converted input fields will not be converted again
+        window.emojiPicker.discover();
+      });
+    </script>
+</body>
+</html>
