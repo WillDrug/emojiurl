@@ -1,20 +1,22 @@
 import sqlite3
 from time import time
 from codec import to_emoji, from_emoji
-from flask import Flask, request, render_template, redirect
+from flask import Flask, request, render_template, redirect, flash
 
 # config part
 app = Flask('emojilink', static_folder='lib')
+app.secret_key = 'lol_testing'
 db = 'emojilinks.db'
 host = 'http://localhost:8080/'
 
 @app.route('/make', strict_slashes=False, methods=['POST'])
 def create_link():
     form = request.form
-    if 'linktype' not in form.keys() or 'uri' not in form.keys():
-        return redirect('/', 200, Response(302, 'Malformed payload :C'))
+    if 'linktype' not in form.keys() or 'uri' not in form.keys() or form['uri'] == '':
+        flash('Malformed payload', 'error')
+        return redirect('/', code=302)
     if form['linktype'] == 'permanent':
-        link = host + '/p/' + to_emoji(form['uri'])  # todo except Exception from codec
+        link = host + 'p/' + to_emoji(form['uri'])  # todo except Exception from codec
         return f'Your link: <a href="{link}">{link}</a>'
     else:
         link = host + form['clink']
@@ -23,12 +25,14 @@ def create_link():
         elif form['linktype'] == 'temporary':
             lifetime = int(time())+86400
         else:
-            return redirect('/', 200) # TODO: fix error responses
+            flash('Malformed payload', 'error')
+            return redirect('/', code=302)
         conn = sqlite3.connect(db)
         c = conn.cursor()
         check = c.execute(f"SELECT * FROM links WHERE custom='{form['clink']}'").fetchone()
         if check is not None:
-            return redirect('/')  # TODO: error resp
+            flash('Link is taken')
+            return redirect('/', code=302)
         c.execute(f"INSERT INTO links VALUES ('{form['uri']}', '{form['clink']}', '{lifetime}')")
         conn.commit()
         conn.close()
@@ -41,6 +45,7 @@ def temp_link(link):
     c = conn.cursor()
     ret = c.execute(f"select * from links where custom='{link}'").fetchone()
     if ret is None:
+        flash('No link found', 'error')
         return redirect('/', code=404)
     if int(time()) > ret[2]:
         c.execute(f"delete from links where custom='{link}'")
@@ -56,6 +61,10 @@ def permanent_redirect(purl):
 @app.route('/help', strict_slashes=False, methods=['GET'])
 def help_view():
     return render_template('help.html', **dict(test='ffffa'))
+
+@app.route('/', strict_slashes=False, methods=['GET'])
+def index_view():
+    return render_template('index.html')
 
 @app.route('/static/<path:path>')
 def static_file(path):

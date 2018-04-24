@@ -16,8 +16,8 @@
 <form action="/make" style="width: 25%" method="POST">
     <label>Link to convert:</label><input type="url" placeholder="http://" name="uri"><br><hr><br>
     <label>Permanent link: </label><input type="radio" name="linktype" value="permanent" checked><br>
-    <label><b>OR</b></label><br>
-    <label>24 hour link (custom text): </label><input type="radio" name="linktype" value="temporary"><br>
+    <label><b>OR use custom emoji link</b></label><br>
+    <label>24 hour link: </label><input type="radio" name="linktype" value="temporary"><br>
     <label>One-shot link: </label><input type="radio" name="linktype" value="oneshot"><br>
     <label>Custom link text: </label> <p class="lead emoji-picker-container">
               <textarea rows="1" cols="50" maxlength="50" data-emojiable="true" name="clink" data-emoji-input="unicode"></textarea>
@@ -25,6 +25,15 @@
     <input type="submit">
 
 </form>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
     <script>
       $(function() {
         // Initializes and creates emoji set from sprite sheet
