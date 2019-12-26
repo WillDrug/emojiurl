@@ -2,6 +2,7 @@ import pickle
 import sys
 
 emojis = pickle.load(open('codebase/emojis.pcl', 'rb+'))
+# fixme: codec should be udated
 
 def base_encode(dec, base=512):
     if base <= 1:

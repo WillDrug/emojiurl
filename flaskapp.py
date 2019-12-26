@@ -2,6 +2,7 @@ import sqlite3
 from time import time
 from codec import to_emoji, from_emoji
 from flask import Flask, request, render_template, redirect, flash
+from toydiscover import report
 
 # config part
 app = Flask('emojilink', static_folder='lib')
@@ -71,5 +72,7 @@ def static_file(path):
     return app.send_static_file(path)
 
 
-
-app.run(host='0.0.0.0', port=8080, debug=True)
+if __name__ == '__main__':
+    tdr = report.ToyDiscoverReporter('emojiurl', 'Emoji Url', 'A URL shortener which uses emoji! Neat!')
+    tdr.ioloop()
+    app.run(host='0.0.0.0', port=8080, debug=True)
