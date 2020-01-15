@@ -30,7 +30,7 @@ class App extends Component {
   }
 
    submitAndUpdate(endpoint) {
-    let res = fetch(endpoint, {
+    fetch(endpoint, {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
