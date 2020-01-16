@@ -26,11 +26,12 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {short: "", oneshot: false, url: "", result: "", message: "Your URL"}
+    this.state = {short: "", oneshot: false, url: "", result: "Non one-time links persist for 24 hours", message: "Your URL will be here"}
   }
 
    submitAndUpdate(endpoint) {
     fetch(endpoint, {
+            method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -41,7 +42,7 @@ class App extends Component {
             this.setState({result: responseJson.result, message: responseJson.message});
           })
           .catch((error) => {
-            //console.error(error);
+            console.error(error);
             this.setState({result: "Failed to request data :(", message: "Your URL"});
           });
    }

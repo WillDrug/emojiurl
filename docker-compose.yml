@@ -1,0 +1,14 @@
+version: '3'
+services:
+  emojiurl:
+    build:
+      context: .
+    container_name: emojiurl
+    hostname: emojiurl
+    networks:
+      - toynet
+
+networks:
+  toynet:
+    external:
+      name: toynet
