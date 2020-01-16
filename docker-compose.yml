@@ -3,8 +3,14 @@ services:
   emojiurl:
     build:
       context: .
+    image: emojiurl:0.1.0
     container_name: emojiurl
     hostname: emojiurl
+    environment:  # must end at a / and contain proto FIXME
+      - HOST=http://127.0.0.1:80/emojiurl/"
+      - DEBUG=yesplease
+      - SECRET=blabla
+      - PUBLIC_URL=/emojiurl/public
     networks:
       - toynet
 

@@ -10,10 +10,11 @@ from flask import Flask, request, render_template, redirect, send_from_directory
 from toydiscover import report
 import os
 # config part
-app = Flask('emojilink', static_folder='templates/static')
+
+host = os.getenv('HOST', 'http://localhost:8080/')
+app = Flask('emojilink', static_folder=f'templates/static')
 app.secret_key = os.getenv('SECRET', 'test')
 db = 'emojilinks.db'
-host = os.getenv('HOST', 'http://localhost:8080/')
 
 @app.route('/make', strict_slashes=False, methods=['POST'])
 def create_link():
