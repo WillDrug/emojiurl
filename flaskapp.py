@@ -53,6 +53,7 @@ def serve_link(link):
         return create_link()  # fixme this is horrendous
     if link == 'encode':
         return encode_link()  # fixme too
+
     conn = sqlite3.connect(db)
     c = conn.cursor()
     ret = c.execute(f"select * from links where short='{link}'").fetchone()

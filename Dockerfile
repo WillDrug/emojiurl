@@ -26,6 +26,7 @@ RUN python -c "import sqlite3; conn = sqlite3.connect('emojilinks.db'); c=  conn
 COPY ./codebase ./codebase
 COPY ./toydiscover ./toydiscover
 COPY codec.py flaskapp.py ./
+COPY ./templates ./templates
 
 # ENV HOST
 # ENV DEBUG
